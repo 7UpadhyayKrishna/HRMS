@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './routes/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
@@ -69,10 +70,11 @@ import ComplianceReport from './pages/Reports/ComplianceReport';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Toaster position="top-right" />
-        <Routes>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Toaster position="top-right" />
+          <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -144,9 +146,10 @@ function App() {
             <Route path="settings/security" element={<Security />} />
             <Route path="settings/preferences" element={<Preferences />} />
           </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

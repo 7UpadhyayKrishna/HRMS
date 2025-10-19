@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Plus, Search, Edit, Trash2, Eye, Briefcase } from 'lucide-react';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
+import JobCreateModal from '../components/JobCreateModal';
 
 const JobDesk = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -22,6 +24,10 @@ const JobDesk = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleJobCreated = (newJob) => {
+    setJobs(prev => [newJob, ...prev]);
   };
 
   const filteredJobs = jobs.filter(job => {
@@ -57,7 +63,10 @@ const JobDesk = () => {
           <h1 className="text-2xl font-bold text-white">Job Desk</h1>
           <p className="text-gray-400 mt-1">Manage job postings and positions</p>
         </div>
-        <button className="btn-primary flex items-center space-x-2">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="btn-primary flex items-center space-x-2"
+        >
           <Plus size={20} />
           <span>Post New Job</span>
         </button>
@@ -155,6 +164,13 @@ const JobDesk = () => {
           <p className="text-gray-400">No job postings found</p>
         </div>
       )}
+
+      {/* Job Creation Modal */}
+      <JobCreateModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onJobCreated={handleJobCreated}
+      />
     </div>
   );
 };
